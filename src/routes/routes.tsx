@@ -1,6 +1,7 @@
 import { RouteObject } from 'react-router-dom';
 import App from '../App.tsx';
 import Home from '../routes/home.tsx';
+import { TickerDemo } from './ticker.tsx';
 
 type DefinedRouteObject<T extends string> = RouteObject & {
   path: T
@@ -22,6 +23,10 @@ export const demoRoutes: {
       width: '100px',
       backgroundColor: 'blue'
     }}/>
+  },
+  'TickerTimer': {
+    path: 'ticker-demo',
+    element: <TickerDemo/>
   }
 };
 

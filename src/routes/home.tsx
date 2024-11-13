@@ -1,18 +1,14 @@
 import {
- Paper, Typography, Box
+  Typography, Box
 } from "@mui/material";
 import { demoRoutes } from "./routes";
 import PageTile from "../components/page-tile";
+import PagePaper from "../components/page-paper";
 
 export default function Home() {
 
   return (
-    <Paper sx={{
-      marginY: 2,
-      marginX: 5,
-      padding: 1,
-      height: '100%'
-    }}>
+    <PagePaper>
       <Typography variant="h2" sx={{ margin: 1 }}>
         Welcome to homepage
       </Typography>
@@ -35,6 +31,6 @@ export default function Home() {
           );
         })}
       </Box>
-    </Paper>
+    </PagePaper>
   );
 }
