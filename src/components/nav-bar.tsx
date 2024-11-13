@@ -4,7 +4,7 @@ import {
 
 export function NavBar() {
   return (
-    <AppBar>
+    <AppBar position="sticky">
       <Typography variant="h1">
         Game Dev Testing Grounds
       </Typography>
