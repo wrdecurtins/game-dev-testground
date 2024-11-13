@@ -24,6 +24,7 @@ export default function Home() {
         {Object.entries(demoRoutes).map(([name, route]) => {
           return (
             <PageTile
+              key={name}
               name={name}
               route={route.path}
               elementPreview={route.element}
