@@ -6,19 +6,29 @@ type DefinedRouteObject<T extends string> = RouteObject & {
   path: T
 }
 
+export const homeRoot = '/';
+
 export const demoRoutes: {
   [key: string]: DefinedRouteObject<typeof key>
 } = {
-  'Demo': {
-    path: 'demo',
-    element: <div>Test Demo</div>
+  'Navigation Test': {
+    path: 'navtest',
+    element: <div>Test Navigation Feature</div>
+  },
+  'Second Nav': {
+    path: 'nav2',
+    element: <div style={{
+      height: '100px',
+      width: '100px',
+      backgroundColor: 'blue'
+    }}/>
   }
 };
 
 export const routes: RouteObject[] = [
   {
     element: <App/>,
-    path: '/',
+    path: homeRoot,
     children: [
       {
         index: true,
