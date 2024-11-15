@@ -1,5 +1,5 @@
 import {
- Card, CardContent, Paper, Typography
+ Card, CardContent, Typography
 } from "@mui/material";
 import { ReactNode } from "react";
 import { Link } from 'react-router-dom';
@@ -25,12 +25,7 @@ export default function PageTile(props: PageTileProps) {
         <Typography variant="h6">
           {props.name}
         </Typography>
-        <Paper sx={{
-          p: 2,
-          marginTop: 1
-        }}>
           {props.elementPreview}
-        </Paper>
       </CardContent>
     </Card>
   );
