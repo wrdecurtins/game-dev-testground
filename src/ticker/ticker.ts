@@ -40,15 +40,15 @@ export class TickerTimer {
   }
 
   startTicking() {
-    this.#timeout = setTimeout(() => {
+    this.#timeout = setInterval(() => {
       this.tick();
-      clearTimeout(this.#timeout);
+      clearInterval(this.#timeout);
       this.startTicking();
     }, this.#tickSpeed);
   }
 
   stopTicking() {
-    clearTimeout(this.#timeout);
+    clearInterval(this.#timeout);
   }
 
   tick() {

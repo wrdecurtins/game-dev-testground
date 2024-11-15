@@ -53,7 +53,6 @@ export class MouseFollowingCircle {
   }
 
   #animate() {
-    console.log('animate');
     let topOffset = 0;
     let leftOffset = 0;
     const rect = this.#getCanvas()?.getBoundingClientRect();
