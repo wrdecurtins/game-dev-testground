@@ -1,26 +1,18 @@
 import {
- Typography, Button,
- CircularProgress, Box,
- ButtonProps,
- LinearProgress
+  Typography, Button,
+  CircularProgress, Box,
+  ButtonProps,
+  LinearProgress
 } from "@mui/material";
 import PagePaper from "../components/page-paper";
-import { useState } from "react";
+import {
+  useEffect, useState
+} from "react";
 import { useTickerTimer } from "../ticker/useTicker";
+import { TickerTimer } from "../ticker/ticker";
 
 export function TickerDemo() {
-
-  const [count, setCount] = useState(0);
-  const [circle, setCircle] = useState(0);
-  const [line, setLine] = useState(0);
-
-  const tickerTimer = useTickerTimer({ tickSpeed: 100 });
-
-  tickerTimer.setTickMethod((context) => {
-    setCount(context.tickCount);
-    setCircle(count % 100);
-    setLine((count / 2) % 100);
-  });
+  const tickerTimer = useTickerTimer({ tickSpeed: 50 });
 
   function StyledButton(props: ButtonProps) {
     return (
@@ -33,9 +25,11 @@ export function TickerDemo() {
       <Typography variant="h3" sx={{ margin: 1 }}>
         Ticker Timer Demo
       </Typography>
-      <Typography variant="h5" sx={{ margin: 1 }}>
-        Tick Count: {count}
-      </Typography>
+
+      <TickCount
+        ticker={tickerTimer}
+      />
+
       <Box>
         <StyledButton onClick={() => {
           tickerTimer.startTicking();
@@ -48,18 +42,72 @@ export function TickerDemo() {
           Stop Ticking
         </StyledButton>
       </Box>
-      <Box>
-        <Typography>
-          Circle Progress:
-        </Typography>
-        <CircularProgress variant="determinate" value={circle}/>
-      </Box>
-      <Box>
-        <Typography>
-          Line Progress:
-        </Typography>
-        <LinearProgress variant="determinate" value={line}/>
-      </Box>
+
+      <CircleProgress ticker={tickerTimer}/>
+
+      <LineProgress ticker={tickerTimer} />
     </PagePaper>
+  );
+}
+
+function TickCount({ ticker }: {ticker: TickerTimer}) {
+  const [count, setCount] = useState(0);
+
+  useEffect(() => {
+    const tickListener = ticker.setTickListener(({ tickCount }) => {
+      setCount(tickCount);
+    });
+
+    return () => {
+      ticker.clearTickListener(tickListener);
+    };
+  }, [ticker, setCount]);
+
+  return (
+    <Typography variant="h5" sx={{ margin: 1 }}>
+      Tick Count: {count}
+    </Typography>
+  );
+}
+
+function CircleProgress({ ticker }: {ticker: TickerTimer}) {
+  const [circle, setCircle] = useState(0);
+  useEffect(() => {
+    const listener = ticker.setTickListener(({ tickCount }) => {
+      setCircle(tickCount % 100);
+    });
+    return () => {
+      ticker.clearTickListener(listener);
+    };
+  });
+
+  return (
+    <Box>
+      <Typography>
+        Circle Progress:
+      </Typography>
+      <CircularProgress variant="determinate" value={circle}/>
+    </Box>
+  );
+}
+
+function LineProgress({ ticker }: {ticker: TickerTimer}) {
+  const [line, setLine] = useState(0);
+  useEffect(() => {
+    const listener = ticker.setTickListener(({ tickCount }) => {
+      setLine((tickCount / 2) % 100);
+    });
+    return () => {
+      ticker.clearTickListener(listener);
+    };
+  });
+
+  return (
+    <Box>
+      <Typography>
+        Line Progress:
+      </Typography>
+      <LinearProgress variant="determinate" value={line}/>
+    </Box>
   );
 }

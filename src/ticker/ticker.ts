@@ -1,3 +1,5 @@
+import { getAutoIncrement } from "../utils/getAutoIncrement";
+
 interface TickMethodContext {
   tickCount: number;
 }
@@ -11,39 +13,26 @@ export class TickerTimer {
   #tickSpeed: number;
   #timeout: number | undefined;
   #tickCount: number = 0;
-  #tickMethod!: (context: TickMethodContext) => void;
+  #tickListeners: { [key: number]: (context: TickMethodContext) => void} = {};
 
-  constructor({
-    tickSpeed,
-    tickMethod
-  }: TickerTimerProps) {
+  constructor({ tickSpeed, }: TickerTimerProps) {
     this.#tickSpeed = tickSpeed || 1000;
-    this.setTickMethod(tickMethod);
   }
 
   #constructTickMethodContext(): TickMethodContext {
-    return {
-      tickCount: this.#tickCount,
-    };
+    return { tickCount: this.#tickCount, };
   }
 
   getTickSpeed() {
     return this.#tickSpeed;
   }
 
-  setTickMethod(tickMethod: TickerTimerProps['tickMethod']) {
-    this.#tickMethod = tickMethod ?
-      (context) => {
-        tickMethod(context);
-      }
-    : () => {};
-  }
-
   startTicking() {
+    if(this.#timeout) {
+      clearInterval(this.#timeout);
+    }
     this.#timeout = setInterval(() => {
       this.tick();
-      clearInterval(this.#timeout);
-      this.startTicking();
     }, this.#tickSpeed);
   }
 
@@ -52,7 +41,21 @@ export class TickerTimer {
   }
 
   tick() {
-    this.#tickMethod(this.#constructTickMethodContext());
+    const context = this.#constructTickMethodContext();
+    const tickMethods = Object.values(this.#tickListeners);
+    for(const tickMethod of tickMethods) {
+      tickMethod(context);
+    }
     this.#tickCount++;
+  }
+
+  setTickListener(callback: (context: TickMethodContext) => void) {
+    const nextMethodId = getAutoIncrement();
+    this.#tickListeners[nextMethodId] = callback;
+    return nextMethodId;
+  }
+
+  clearTickListener(id: number) {
+    delete this.#tickListeners[id];
   }
 }
