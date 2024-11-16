@@ -18,7 +18,8 @@ export default function Home() {
 
       <Box
         sx={{
-          display: 'flex'
+          display: 'flex',
+          flexWrap: 'wrap'
         }}
       >
         {Object.entries(demoRoutes).map(([name, route]) => {

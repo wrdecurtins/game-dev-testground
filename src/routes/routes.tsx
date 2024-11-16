@@ -3,6 +3,7 @@ import App from '../App.tsx';
 import Home from '../routes/home.tsx';
 import { TickerDemo } from './ticker.tsx';
 import BasicCanvas from './basic-canvas.tsx';
+import CanvasWithBasicCollision from './canvas-with-collision.tsx';
 
 type DefinedRouteObject<T extends string> = RouteObject & {
   path: T
@@ -32,6 +33,10 @@ export const demoRoutes: {
   'Basic Canvas': {
     path: 'basic-canvas',
     element: <BasicCanvas/>
+  },
+  'Canvas with Basic Collision': {
+    path: 'canvas-with-basic-collision',
+    element: <CanvasWithBasicCollision />
   }
 };
 
