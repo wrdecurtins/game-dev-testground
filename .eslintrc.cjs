@@ -23,7 +23,7 @@ module.exports = {
    }],
    "object-curly-spacing": ["error", "always"],
    "object-property-newline": ['error'],
-   'newline-destructuring/newline': 'error',
+   'newline-destructuring/newline': ['error', { "consistent": true }],
    "space-before-blocks": ["warn", "always"],
    "semi-style": ["warn", "last"],
    "semi": ["warn", "always"]
