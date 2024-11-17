@@ -55,7 +55,7 @@ export class Projectile extends Entity {
   }
 
   update() {
-    if(this.y < 0) this.game.destroyEntity(this.id);
+    if(this.y < 0 || this.y > this.game.getCanvas().height) this.game.destroyEntity(this.id);
     this.y = this.y + this.#yVelocity;
   }
 
