@@ -52,13 +52,33 @@ export class Enemy extends Entity {
     this.shotSpeed = shotSpeed;
   }
 
-  static generateRandEnemy({ game }: {game: Game}): Enemy {
+  static generateRandEnemy({game,difficultyModifier}: {game: Game, difficultyModifier: number}): Enemy {
     const { width } = game.getCanvas();
+
+    const baseVals = {
+      moveSpeed: {
+        min: 2,
+        max: 6
+      },
+      shootingTimeout: {
+        min: 200,
+        max: 1500,
+      },
+      shotSpeed: {
+        min: 2,
+        max: 5,
+      }
+    };
+
+    const moveSpeedMod = Math.ceil(difficultyModifier / 2);
+    const shootingTimeoutMod = 100 * difficultyModifier;
+    const shotSpeedMod = Math.floor(difficultyModifier / 2);
+
     return new Enemy({
       game,
-      moveSpeed: getRndInteger(2, 6),
-      shootingTimeout: getRndInteger(200, 1500),
-      shotSpeed: getRndInteger(2, 5),
+      moveSpeed: getRndInteger(baseVals.moveSpeed.min + moveSpeedMod, baseVals.moveSpeed.max + moveSpeedMod),
+      shootingTimeout: getRndInteger(baseVals.shootingTimeout.min + shootingTimeoutMod, baseVals.shootingTimeout.max + shootingTimeoutMod),
+      shotSpeed: getRndInteger(baseVals.shotSpeed.min + shotSpeedMod, baseVals.moveSpeed.max + shotSpeedMod),
       x: getRndInteger(0, width - enemyWidth),
       y: getRndInteger(0, 3) * (enemyHeight + 1),
     });

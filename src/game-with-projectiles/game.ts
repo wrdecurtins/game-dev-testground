@@ -31,6 +31,7 @@ export class Game {
 
   player?: Player;
   score = 0;
+  difficulty = 0;
 
   constructor({ canvasId, }: GameProps) {
     this.#canvasId = canvasId;
@@ -67,6 +68,9 @@ export class Game {
   update() {
     this.mouseInputs = this.#mouseHandler.mouseInputs;
     this.#entities.forEach((entity) => entity.update());
+    if(!this.#entities.find(x => x.type === EntityType.ENEMY)) {
+      this.nextLevel();
+    }
   }
 
   handleCollisions() {
@@ -131,7 +135,10 @@ export class Game {
 
     const enemyCount = 5;
     for(let i = 0; i < enemyCount; i++) {
-      this.#entities.push(Enemy.generateRandEnemy({ game: this }));
+      this.#entities.push(Enemy.generateRandEnemy({
+        game: this,
+        difficultyModifier: 0
+      }));
     }
 
     window.addEventListener('mousemove', this.#mouseMove.bind(this));
@@ -139,9 +146,21 @@ export class Game {
     this.animate();
   }
 
+  nextLevel() {
+    this.difficulty++;
+    const enemyCount = 5 + Math.ceil(this.difficulty / 2);
+    for(let i = 0; i < enemyCount; i++) {
+      this.#entities.push(Enemy.generateRandEnemy({
+        game: this,
+        difficultyModifier: this.difficulty
+      }));
+    }
+  }
+
   quit() {
     window.removeEventListener('mousemove', this.#mouseMove);
     this.#mouseHandler.removeListeners();
+    this.#entities = [];
   }
 
   addEntity(entity: EntityTypes) {
