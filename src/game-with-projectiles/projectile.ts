@@ -63,6 +63,7 @@ export class Projectile extends Entity {
     if(this.projectileType === ProjectileType.PLAYER) {
       this.game.destroyEntity(entity.id);
       this.game.destroyEntity(this.id);
+      this.game.score += 10;
     } else if (this.projectileType === ProjectileType.ENEMY && entity.type === EntityType.PLAYER) {
       this.game.destroyEntity(this.id);
     }

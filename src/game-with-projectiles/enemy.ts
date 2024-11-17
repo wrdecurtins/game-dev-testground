@@ -60,7 +60,7 @@ export class Enemy extends Entity {
       shootingTimeout: getRndInteger(200, 1500),
       shotSpeed: getRndInteger(2, 5),
       x: getRndInteger(0, width - enemyWidth),
-      y: getRndInteger(1, 3) * (enemyHeight + 1),
+      y: getRndInteger(0, 3) * (enemyHeight + 1),
     });
   }
 

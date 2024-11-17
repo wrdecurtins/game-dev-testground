@@ -1,8 +1,5 @@
-import { MouseEventHandler } from "react";
 import { clearCanvas } from "../canvas/utils";
-import {
-  Entity, EntityType
-} from "./entity";
+import { EntityType } from "./entity";
 import { Player } from "./player";
 import {
   Projectile, ProjectileType
@@ -10,6 +7,7 @@ import {
 import { MouseHandler } from "../input-handlers/mouse";
 import { Enemy } from "./enemy";
 import { detectHitboxCollisions } from "../utils/detectHitboxCollisions";
+import { UI } from "./ui";
 
 interface GameProps {
   canvasId: string;
@@ -25,14 +23,19 @@ export class Game {
   #canvasId: string;
   #entities: EntityTypes[] = [];
   #mouseHandler: MouseHandler;
+  #ui: UI;
 
   mouseX: number = 0;
   mouseY: number = 0;
   mouseInputs: string[] = [];
 
+  player?: Player;
+  score = 0;
+
   constructor({ canvasId, }: GameProps) {
     this.#canvasId = canvasId;
     this.#mouseHandler = new MouseHandler();
+    this.#ui = new UI({ game: this });
   }
 
   #mouseMove(ev: MouseEvent) {
@@ -58,6 +61,7 @@ export class Game {
   draw() {
     clearCanvas(this.#canvasId);
     this.#entities.forEach((entity) => entity.draw());
+    this.#ui.draw();
   }
 
   update() {
@@ -122,7 +126,8 @@ export class Game {
   }
 
   begin() {
-    this.#entities.push(new Player({ game: this }));
+    this.player = new Player({ game: this });
+    this.#entities.push(this.player);
 
     const enemyCount = 5;
     for(let i = 0; i < enemyCount; i++) {
