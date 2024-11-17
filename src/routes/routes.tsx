@@ -4,6 +4,7 @@ import Home from '../routes/home.tsx';
 import { TickerDemo } from './ticker.tsx';
 import BasicCanvas from './basic-canvas.tsx';
 import CanvasWithBasicCollision from './canvas-with-collision.tsx';
+import GameWithProjectilesPage from './game-with-projectiles.tsx';
 
 type DefinedRouteObject<T extends string> = RouteObject & {
   path: T
@@ -25,6 +26,10 @@ export const demoRoutes: {
   'Canvas with Basic Collision': {
     path: 'canvas-with-basic-collision',
     element: <CanvasWithBasicCollision />
+  },
+  'Game with projectiles': {
+    path: 'game-with-projectiles',
+    element: <GameWithProjectilesPage />
   }
 };
 

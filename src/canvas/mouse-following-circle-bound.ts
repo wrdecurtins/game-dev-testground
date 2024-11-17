@@ -63,7 +63,7 @@ export class MouseFollowingCircleBound {
       topOffset = rect.top;
       leftOffset = rect.left;
     }
-    const { x, y} = boundXYToCanvas({
+    const {x,y} = boundXYToCanvas({
       x: this.#mouseX - leftOffset,
       y: this.#mouseY - topOffset,
       canvasId: this.#canvasId,
